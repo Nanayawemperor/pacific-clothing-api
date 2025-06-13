@@ -1,0 +1,50 @@
+paths:
+  /departments:
+    get:
+      summary: Get all departments
+      responses:
+        200:
+          description: A list of departments
+    post:
+      summary: Create a new department
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                location:
+                  type: string
+      responses:
+        201:
+          description: Department created
+
+  /employees:
+    get:
+      summary: Get all employees
+      responses:
+        200:
+          description: A list of employees
+    post:
+      summary: Create a new employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                department:
+                  type: string
+                position:
+                  type: string
+      responses:
+        201:
+          description: Employee created
