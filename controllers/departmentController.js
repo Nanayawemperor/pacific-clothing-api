@@ -16,10 +16,6 @@ const getAll = async (req, res) => {
 const create = async (req, res) => {
   const { name, location } = req.body;
 
-  if (!name || !location) {
-    return res.status(400).json({ message: 'Name and location are required' });
-  }
-
   try {
     const department = new Department({ name, location });
     const saved = await department.save();
@@ -33,18 +29,17 @@ const create = async (req, res) => {
 // PUT update department by ID
 const update = async (req, res) => {
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: 'Invalid department ID' });
-  }
-
   const { name, location } = req.body;
-  const updateFields = { name, location };
+
+  // Build update object only with provided fields
+  const updateFields = {};
+  if (name !== undefined) updateFields.name = name;
+  if (location !== undefined) updateFields.location = location;
 
   try {
     const updated = await Department.findByIdAndUpdate(id, updateFields, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     if (!updated) {
@@ -61,10 +56,6 @@ const update = async (req, res) => {
 // DELETE department by ID
 const remove = async (req, res) => {
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: 'Invalid department ID' });
-  }
 
   try {
     const deleted = await Department.findByIdAndDelete(id);
@@ -84,5 +75,5 @@ module.exports = {
   getAll,
   create,
   update,
-  remove
+  remove,
 };

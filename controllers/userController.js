@@ -26,6 +26,8 @@ exports.createUser = async (req, res) => {
   try {
     const { username, password, role } = req.body;
 
+    // TODO: Validate inputs here or in route middleware
+
     // Check if user already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
@@ -46,11 +48,13 @@ exports.updateUser = async (req, res) => {
   try {
     const { username, password, role } = req.body;
 
+    // TODO: Validate inputs here or in route middleware
+
     // Find user by ID
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Update fields
+    // Update fields if provided
     if (username) user.username = username;
     if (role) user.role = role;
     if (password) user.password = password; // Will be hashed by pre('save') hook
@@ -63,11 +67,11 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-
 // DELETE user
 exports.deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
     res.json({ message: 'User deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });

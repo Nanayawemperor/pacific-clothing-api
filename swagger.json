@@ -54,14 +54,40 @@
           }
         },
         "responses": {
-          "200": { "description": "Successful login returns a JWT token" },
+          "200": {
+            "description": "Successful login returns a JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token to be used for authorization"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout user and invalidate JWT token",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "User logged out successfully" },
+          "401": { "description": "Invalid or missing token" }
         }
       }
     },
     "/departments": {
       "get": {
         "summary": "Get all departments",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "A list of departments",
@@ -74,29 +100,36 @@
               }
             }
           }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       },
       "post": {
         "summary": "Create a new department",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Department" }
+              "schema": { "$ref": "#/components/schemas/DepartmentInput" }
             }
           }
         },
         "responses": {
-          "201": { "description": "Department created" },
+          "201": {
+            "description": "Department created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Department" }
+              }
+            }
+          },
           "400": { "description": "Validation error" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       }
     },
     "/departments/{id}": {
       "put": {
         "summary": "Update a department by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -109,19 +142,26 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Department" }
+              "schema": { "$ref": "#/components/schemas/DepartmentInput" }
             }
           }
         },
         "responses": {
-          "200": { "description": "Department updated successfully" },
+          "200": {
+            "description": "Department updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Department" }
+              }
+            }
+          },
           "404": { "description": "Department not found" },
           "400": { "description": "Validation error" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       },
       "delete": {
         "summary": "Delete a department by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -133,13 +173,13 @@
         "responses": {
           "200": { "description": "Department deleted successfully" },
           "404": { "description": "Department not found" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       }
     },
     "/employees": {
       "get": {
         "summary": "Get all employees",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "A list of employees",
@@ -152,29 +192,36 @@
               }
             }
           }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       },
       "post": {
         "summary": "Create a new employee",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Employee" }
+              "schema": { "$ref": "#/components/schemas/EmployeeInput" }
             }
           }
         },
         "responses": {
-          "201": { "description": "Employee created" },
+          "201": {
+            "description": "Employee created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Employee" }
+              }
+            }
+          },
           "400": { "description": "Validation error or department ID is invalid" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       }
     },
     "/employees/{id}": {
       "put": {
         "summary": "Update an employee by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -187,19 +234,26 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Employee" }
+              "schema": { "$ref": "#/components/schemas/EmployeeInput" }
             }
           }
         },
         "responses": {
-          "200": { "description": "Employee updated successfully" },
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Employee" }
+              }
+            }
+          },
           "404": { "description": "Employee not found" },
           "400": { "description": "Validation error" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       },
       "delete": {
         "summary": "Delete an employee by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -211,13 +265,13 @@
         "responses": {
           "200": { "description": "Employee deleted successfully" },
           "404": { "description": "Employee not found" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       }
     },
     "/users": {
       "get": {
         "summary": "Get all users",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "A list of users",
@@ -225,34 +279,41 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/User" }
+                  "items": { "$ref": "#/components/schemas/UserOutput" }
                 }
               }
             }
           }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       },
       "post": {
         "summary": "Create a new user",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/User" }
+              "schema": { "$ref": "#/components/schemas/UserInput" }
             }
           }
         },
         "responses": {
-          "201": { "description": "User created" },
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserOutput" }
+              }
+            }
+          },
           "400": { "description": "Validation error or username already exists" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       }
     },
     "/users/{id}": {
       "put": {
         "summary": "Update a user by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -265,19 +326,26 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/User" }
+              "schema": { "$ref": "#/components/schemas/UserInput" }
             }
           }
         },
         "responses": {
-          "200": { "description": "User updated successfully" },
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserOutput" }
+              }
+            }
+          },
           "404": { "description": "User not found" },
           "400": { "description": "Validation error" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       },
       "delete": {
         "summary": "Delete a user by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -289,13 +357,13 @@
         "responses": {
           "200": { "description": "User deleted successfully" },
           "404": { "description": "User not found" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       }
     },
-    "/time_logs": {
+    "/timelogs": {
       "get": {
         "summary": "Get all time logs",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "A list of time logs",
@@ -308,29 +376,36 @@
               }
             }
           }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       },
       "post": {
         "summary": "Create a new time log",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/TimeLog" }
+              "schema": { "$ref": "#/components/schemas/TimeLogInput" }
             }
           }
         },
         "responses": {
-          "201": { "description": "Time log created" },
-          "400": { "description": "Validation error" }
-        },
-        "security": [{ "bearerAuth": [] }]
+          "201": {
+            "description": "Time log created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TimeLog" }
+              }
+            }
+          },
+          "400": { "description": "Validation error or invalid employee ID" }
+        }
       }
     },
-    "/time_logs/{id}": {
+    "/timelogs/{id}": {
       "put": {
         "summary": "Update a time log by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -343,19 +418,26 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/TimeLog" }
+              "schema": { "$ref": "#/components/schemas/TimeLogInput" }
             }
           }
         },
         "responses": {
-          "200": { "description": "Time log updated successfully" },
+          "200": {
+            "description": "Time log updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TimeLog" }
+              }
+            }
+          },
           "404": { "description": "Time log not found" },
           "400": { "description": "Validation error" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       },
       "delete": {
         "summary": "Delete a time log by ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -367,8 +449,7 @@
         "responses": {
           "200": { "description": "Time log deleted successfully" },
           "404": { "description": "Time log not found" }
-        },
-        "security": [{ "bearerAuth": [] }]
+        }
       }
     }
   },
@@ -381,47 +462,82 @@
       }
     },
     "schemas": {
+      "DepartmentInput": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["name"]
+      },
       "Department": {
         "type": "object",
         "properties": {
-          "_id": { "type": "string", "example": "60d0fe4f5311236168a109ca" },
-          "name": { "type": "string", "example": "Sales" },
-          "location": { "type": "string", "example": "Accra" }
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      },
+      "EmployeeInput": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "age": { "type": "integer" },
+          "department": { "type": "string" }
         },
-        "required": ["name", "location"]
+        "required": ["name", "age", "department"]
       },
       "Employee": {
         "type": "object",
         "properties": {
-          "_id": { "type": "string", "example": "60d0fe4f5311236168a109cb" },
-          "firstName": { "type": "string", "example": "John" },
-          "lastName": { "type": "string", "example": "Doe" },
-          "department": { "type": "string", "example": "60d0fe4f5311236168a109ca" },
-          "position": { "type": "string", "example": "Manager" }
-        },
-        "required": ["firstName", "lastName", "department", "position"]
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "age": { "type": "integer" },
+          "department": { "$ref": "#/components/schemas/Department" }
+        }
       },
-      "User": {
+      "UserInput": {
         "type": "object",
         "properties": {
-          "_id": { "type": "string", "example": "60d0fe4f5311236168a109cc" },
-          "username": { "type": "string", "example": "johndoe" },
-          "password": { "type": "string", "format": "password", "example": "secret123" },
-          "role": { "type": "string", "example": "admin" }
+          "username": { "type": "string" },
+          "password": { "type": "string", "format": "password" }
         },
-        "required": ["username", "password", "role"]
+        "required": ["username", "password"]
+      },
+      "UserOutput": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "username": { "type": "string" }
+        }
+      },
+      "TimeLogInput": {
+        "type": "object",
+        "properties": {
+          "employee": { "type": "string" },
+          "clockIn": { "type": "string", "format": "date-time" },
+          "clockOut": { "type": "string", "format": "date-time", "nullable": true },
+          "notes": { "type": "string", "nullable": true }
+        },
+        "required": ["employee", "clockIn"]
       },
       "TimeLog": {
         "type": "object",
         "properties": {
-          "_id": { "type": "string", "example": "60d0fe4f5311236168a109cd" },
-          "employeeId": { "type": "string", "example": "60d0fe4f5311236168a109cb" },
-          "clockIn": { "type": "string", "format": "date-time", "example": "2025-06-13T08:00:00Z" },
-          "clockOut": { "type": "string", "format": "date-time", "example": "2025-06-13T17:00:00Z" },
-          "notes": { "type": "string", "example": "Worked on new collection design" }
-        },
-        "required": ["employeeId", "clockIn"]
+          "_id": { "type": "string" },
+          "employee": { "$ref": "#/components/schemas/Employee" },
+          "clockIn": { "type": "string", "format": "date-time" },
+          "clockOut": { "type": "string", "format": "date-time", "nullable": true },
+          "notes": { "type": "string", "nullable": true }
+        }
       }
     }
-  }
+  },
+  "tags": [
+    { "name": "Auth", "description": "Authentication endpoints" },
+    { "name": "Departments", "description": "Manage departments" },
+    { "name": "Employees", "description": "Manage employees" },
+    { "name": "Users", "description": "Manage users" },
+    { "name": "Time Logs", "description": "Manage employee time logs" }
+  ]
 }

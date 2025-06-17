@@ -5,6 +5,12 @@ paths:
       responses:
         200:
           description: A list of departments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
     post:
       summary: Create a new department
       requestBody:
@@ -13,14 +19,23 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - name
+                - location
               properties:
                 name:
                   type: string
+                  example: "Marketing"
                 location:
                   type: string
+                  example: "New York"
       responses:
         201:
-          description: Department created
+          description: Department created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
 
   /employees:
     get:
@@ -28,6 +43,12 @@ paths:
       responses:
         200:
           description: A list of employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
     post:
       summary: Create a new employee
       requestBody:
@@ -36,15 +57,71 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - firstName
+                - lastName
+                - department
+                - position
               properties:
                 firstName:
                   type: string
+                  example: "John"
                 lastName:
                   type: string
+                  example: "Doe"
                 department:
                   type: string
+                  description: Department ObjectId
+                  example: "60d21b4667d0d8992e610c85"
                 position:
                   type: string
+                  example: "Manager"
       responses:
         201:
-          description: Employee created
+          description: Employee created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+
+components:
+  schemas:
+    Department:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: MongoDB ObjectId
+          example: "60d21b4667d0d8992e610c84"
+        name:
+          type: string
+        location:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Employee:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: MongoDB ObjectId
+          example: "60d21b4967d0d8992e610c86"
+        firstName:
+          type: string
+        lastName:
+          type: string
+        department:
+          $ref: '#/components/schemas/Department'
+        position:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
