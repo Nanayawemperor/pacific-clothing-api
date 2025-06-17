@@ -44,11 +44,11 @@ const timelogRoutes = require('./routes/timelogs');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/departments', departmentRoutes);
-app.use('/api/employees', employeeRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/timelogs', timelogRoutes);
+app.use('/auth', authRoutes);
+app.use('/departments', departmentRoutes);
+app.use('/employees', employeeRoutes);
+app.use('/users', userRoutes);
+app.use('/timelogs', timelogRoutes);
 
 // Fallback for undefined routes
 app.use((req, res) => {
